@@ -1,5 +1,12 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import { useSesionStore } from '@/stores/AuthSesionStore';
+import { reactive } from 'vue';
+  const sesionStore = useSesionStore();
+  const sesion = reactive(sesionStore);
+</script>
 
 <template>
-  <h1>Pantalla de tareas</h1>
+    <button @click="sesion.logout">
+      Cerrar Sesion
+    </button>
 </template>
