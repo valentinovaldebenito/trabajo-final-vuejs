@@ -18,11 +18,18 @@ export const useSesionStore = defineStore({
         error: ''
     }),
     actions: {
+        /**
+         * Cambiar el token csrf
+         */
         async changeCrsfToken() {
             const headers = apiInstance.defaults.headers;
             this.data!.crsfToken = headers["csrf-token"]?.toString();
         },
 
+        /**
+         * Registrar un usuario
+         * @param userData 
+         */
         async registerUser(userData: CredentialsModel) {
             this.loading = true;
             try {
@@ -51,6 +58,10 @@ export const useSesionStore = defineStore({
             }
         },
 
+        /**
+         * Iniciar sesión
+         * @param userData 
+         */
         async login(userData: CredentialsModel) {
             this.loading = true;
             try {
@@ -81,6 +92,9 @@ export const useSesionStore = defineStore({
             }
         },
 
+        /**
+         * Renovar el token
+         */
         renewToken() {
             setTimeout(async () => {
                 try {
@@ -97,6 +111,9 @@ export const useSesionStore = defineStore({
             setTimeout(() => this.renewToken(), 3 * 60 * 1000);
         },
 
+        /**
+         * Cerrar sesión
+         */
         async logout() {
             this.loading = true;
             this.data!.user = undefined;
