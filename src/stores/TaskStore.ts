@@ -17,7 +17,7 @@ export const useTaskStore = defineStore({
     pending: [],
   }),
   actions: {
-    agregarTarea(tarea: Tarea) {
+    async agregarTarea(tarea: Tarea) {
       const idTarea: number = this.data.length
       const nuevaTarea: Tarea = { ...tarea, id: idTarea }
       this.data.push(nuevaTarea)
@@ -28,13 +28,13 @@ export const useTaskStore = defineStore({
         this.pending.push(nuevaTarea)
       }
     },
-    eliminarTarea(tarea: Tarea) {
+    async eliminarTarea(tarea: Tarea) {
       this.data = this.data.filter((item) => item.id !== tarea.id)
       this.completed = this.completed.filter((item) => item.id !== tarea.id)
       this.pending = this.pending.filter((item) => item.id !== tarea.id)
       this.all = this.data
     },
-    cambiarEstado(tarea: Tarea) {
+    async cambiarEstado(tarea: Tarea) {
       const index = this.data.findIndex((item) => item.id === tarea.id)
       this.data[index].completa = !this.data[index].completa
       if (this.data[index].completa) {

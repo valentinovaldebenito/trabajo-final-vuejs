@@ -29,9 +29,9 @@ const nuevaTarea: Tarea = {
 
 const reactiveTask = reactive(nuevaTarea)
 
-function makeItComplete() {
+/* function makeItComplete() {
   reactiveTask.completa = !reactiveTask.completa
-}
+} */
 
 function guardarTarea() {
   tasks.agregarTarea(reactiveTask)
@@ -39,35 +39,29 @@ function guardarTarea() {
 </script>
 
 <template>
-  <div class="w-full h-full bg-red-600">
-    <div class="absolute top-3 sm:top-4 left-5">
-      <div class="relative">
-        <input
-          type="ckeckbox"
-          @click="makeItComplete"
-          class="border rounded-full focus:ouline-none h-6 w-6 cursor-pointer transition ease-linear"
-        />
-        <!-- SI ES TAREA COMPLETA CON V-IF -->
-        <SolidCircleIcon
-          @click="makeItComplete"
-          v-if="reactiveTask.completa"
-          class="h-100 w-100 absolute left-0 top-0 text-green-500"
-        />
+  <div class="flex flex-col w-full h-full rounded-md pt-3">
+    <!-- <div class="">
+      <div class="">
+        <input type="ckeckbox" @click="makeItComplete" class="rounded-full focus:ouline-none h-6 w-6 cursor-pointer transition ease-linear" />
+        <SolidCircleIcon @click="makeItComplete" v-if="reactiveTask.completa" class="h-100 w-100 absolute text-green-500" />
       </div>
-    </div>
+    </div> -->
 
     <form @submit.prevent>
-      <input
-        v-model="nuevaTarea.tarea"
-        type="text"
-        placeholder="Escribe una nueva tarea"
-        class="sm:text-base overflow-ellipsis w-full focus:outline-none py-4 sm:py-4.5 pr-8 pl-14 sm:pl-16 cursor-pointer transition ease-linear"
-      />
+      <div class="flex justify-center w-full">
+        <input
+          v-model="nuevaTarea.tarea"
+          type="text"
+          placeholder="Escribe una nueva tarea"
+          class="sm:text-base overflow-ellipsis w-10/12 border border-solid border-slate-400 rounded-md py-4 sm:py-4.5 pr-8 pl-14 sm:pl-16 cursor-pointer transition ease-linear"
+        />
+      </div>
 
-      <div class="flex justify-around cursor-default transition ease-linear">
-        botones
-        <button class="p-1 cursor-pointer" @click="guardarTarea">Guardar Tarea</button>
-        <button class="p-1 cursor-pointer">Eliminar Tarea?</button>
+      <div class="flex w-full justify-center items-center transition ease-linear py-2">
+        <div class="flex justify-end w-10/12">
+          <button class="p-2 bg-[#40b882] text-white rounded-md cursor-pointer" @click="guardarTarea">Guardar Tarea</button>
+          <!-- <button class="p-1 bg-white rounded-md cursor-pointer">Eliminar Tarea?</button> -->
+        </div>
       </div>
     </form>
   </div>

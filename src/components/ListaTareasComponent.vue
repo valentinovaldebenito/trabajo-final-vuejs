@@ -21,94 +21,82 @@ const tasks = reactive(taskStore)
 </script>
 
 <template>
-  <div
-    class="w-[30%] h-full flex flex-col items-center bg-red-400 rounded-md overflow-y-auto shadow-lg mt-10 p-4 transition ease-linear"
-  >
+  <div class="w-[90%] sm:w-[30%] h-full flex flex-col items-center bg-white rounded-md overflow-y-auto mt-10 p-4 transition ease-linear">
     <div class="px-6 py-4">
-      <div class="font-bold text-xl mb-2">Mis Tareas</div>
+      <div class="font-semibold text-gray-900 text-2xl mb-2">Mis Tareas</div>
     </div>
 
-    <div
-      v-for="task in tasks.data"
-      :key="task.id"
-      class="w-full relative group border-black my-2 transition ease-linear bg-green-300"
-    >
-      <form v-on:submit.prevent class="flex h-full w-full">
+    <div id="task-cards" v-for="task in tasks.data" :key="task.id" class="flex items-center w-full h-[60px] p-1 rounded-md my-2 bg-gray-200">
+      <form v-on:submit.prevent class="flex items-center h-full w-full drop-shadow-lg">
         <div class="">
-          <div @click="tasks.cambiarEstado(task)" class="relative">
+          <div @click="tasks.cambiarEstado(task)" class="flex flex-col mr-2">
             <input
+              v-if="task.completa"
+              name="completa"
               type="ckeckbox"
-              class="border rounded-full focus:ouline-none h-6 w-6 cursor-pointer transition ease-linear"
+              class="border rounded-full bg-red-500 border-0 focus:ouline-none h-6 w-6 cursor-pointer transition ease-linear"
             />
-            <!-- usar directiva v-if para mostrar si la tarjeta esta completada -->
-            <!-- <CompletedIcon v-if="task.completa" class="h-100 w-100 absolute text-green-600" /> -->
+            <input
+              v-if="!task.completa"
+              type="ckeckbox"
+              class="border rounded-full bg-green-500 border-0 focus:ouline-none h-6 w-6 cursor-pointer transition ease-linear"
+            />
           </div>
         </div>
 
-        <!-- usar v-model para pasar el texto de la tarea en input -->
         <input
           disabled
           v-model="task.tarea"
           type="text"
-          class="rounded-md sm:text-base overflow-ellipsis w-full disabled:bg-white focus:outline-none cursor-pointer transition ease-linear"
+          id="input-task"
+          class="rounded-md sm:text-base overflow-ellipsis w-full h-[40px] pl-2 disabled:bg-white focus:outline-none cursor-pointer transition ease-linear"
         />
-        <div class="flex justify-around cursor-default">
-          <button @click="tasks.eliminarTarea(task)" class="p-1 cursor-pointer">
-            <!-- <TrashIcon class="w-6 h-6 hover:text-red-500" /> -->Eliminar
+        <div class="flex ml-2 justify-center items-center">
+          <button
+            @click="tasks.eliminarTarea(task)"
+            class="flex items-center justify-center pb-1 w-[30px] h-[30px] bg-red-500 rounded-full text-white cursor-pointer"
+          >
+            ⨯
           </button>
         </div>
 
-        <!-- indicador de tarea terminada, usar v-if segun corresponda -->
-        <span
-          v-if="task.completa"
-          class="bg-green-200 text-teal-800 text-xs px-2 rounded-full uppercase font-semibold"
-          >Completo</span
-        >
-        <span
-          v-if="!task.completa"
-          class="bg-red-200 text-red-800 text-xs px-2 rounded-full uppercase font-semibold"
-          >Pendiente</span
-        >
+        <div v-if="task.completa" class="bg-green-200 text-teal-800 text-xs mx-2 px-2 rounded-full uppercase font-semibold">Completo</div>
+        <div v-if="!task.completa" class="bg-red-200 text-red-800 text-xs mx-2 px-2 rounded-full uppercase font-semibold">Pendiente</div>
       </form>
     </div>
 
-    <!-- aca acciones de filtrado, usar @click segun corresponda -->
-    <div class="px-6 py-2 mt-5">
-      <span
+    <div class="flex justify-center w-full px-6 py-2 mt-5">
+      <button
         @click="tasks.getAll"
-        class="inline-block bg-gray-300 rounded px-3 py-1 text-sm font-semibold mr-2 mb-2 hover:bg-gray-500 cursor-pointer shadow-lg"
-        >Todas</span
+        class="inline-block bg-[#40b882] rounded-md px-3 py-1 text-white text-sm font-semibold mr-2 mb-2 hover:bg-teal-700 cursor-pointer shadow-lg"
       >
-      <span
+        Todas
+      </button>
+      <button
         @click="tasks.getCompletas"
-        class="inline-block bg-gray-300 rounded px-3 py-1 text-sm font-semibold mr-2 mb-2 hover:bg-gray-500 cursor-pointer shadow-lg"
-        >Completas</span
+        class="inline-block bg-[#40b882] rounded-md px-3 py-1 text-white text-sm font-semibold mr-2 mb-2 hover:bg-teal-700 cursor-pointer shadow-lg"
       >
-      <span
+        Completas
+      </button>
+      <button
         @click="tasks.getPendientes"
-        class="inline-block bg-gray-300 rounded px-3 py-1 text-sm font-semibold mr-2 mb-2 hover:bg-gray-500 cursor-pointer shadow-lg"
-        >Pendientes</span
+        class="inline-block bg-[#40b882] rounded-md px-3 py-1 text-white text-sm font-semibold mr-2 mb-2 hover:bg-teal-700 cursor-pointer shadow-lg"
       >
+        Pendientes
+      </button>
     </div>
   </div>
 </template>
 
-<!-- <style scoped>
-.list-wrapper {
-  background: rgb(190, 190, 190);
+<style scoped>
+#input-task {
+  background-color: transparent !important;
 }
-.list-wrapper.dark {
-  background: rgb(101, 101, 101);
+#task-cards {
+  filter: drop-shadow(0px 5px 10px rgb(179, 179, 179));
 }
-input.tarea {
-  border-radius: 5px;
+#task-cards:hover {
+  transform: scale(1.01);
+  filter: drop-shadow(0px 10px 10px rgb(179, 179, 179));
 }
-
-input.tarea.dark {
-  background: #434343;
-}
-
-.badge {
-  top: -8px;
-}
-</style> -->
+</style>

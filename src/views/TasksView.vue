@@ -17,19 +17,14 @@ const tareas = reactive(taskStore)
         <span class="font-semibold text-2xl text-white">Task Manager</span>
       </div>
       <div class="flex items-center justify-end pr-4 w-6/12">
-        <button
-          class="bg-[#40b882] text-white rounded-md p-1 w-[110px] h-[40px]"
-          @click="sesion.logout"
-        >
-          Cerrar Sesion
-        </button>
+        <button class="bg-[#40b882] text-white rounded-md p-1 w-[110px] h-[40px]" @click="sesion.logout">Cerrar Sesion</button>
       </div>
     </div>
-    <div class="flex flex-col w-full h-[90%] bg-card overflow-y-scroll">
-      <div class="w-full h-[20%] flex justify-center items-center bg-purple-500">
+    <div class="flex flex-col w-full justify-center items-center h-[90%] bg-gray-800 overflow-y-scroll">
+      <div class="w-full sm:w-[50%] sm:h-[20%] flex justify-center items-center">
         <TaskUploadComponent />
       </div>
-      <div class="w-full h-[80%] flex justify-center items-center bg-green-500">
+      <div class="w-full h-[80%] flex justify-center items-center">
         <ListaTareasComponent />
       </div>
     </div>
