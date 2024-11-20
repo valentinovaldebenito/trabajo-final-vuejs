@@ -2,7 +2,10 @@
     import { reactive, ref, computed } from 'vue'
     import { useSesionStore } from '@/stores/AuthSesionStore'
     import type { CredentialsModel } from '@/models/CredentialsModel'
-
+    import { useThemeStore } from '@/stores/ThemeStore'
+    
+    const useTheme = useThemeStore()
+    const theme = reactive(useTheme)
     const sesion = useSesionStore()
 
     const newCredentials: CredentialsModel = {
@@ -27,29 +30,29 @@
 <template>
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
         <img class="mx-auto h-14 w-auto" src="https://seeklogo.com/images/V/vuejs-logo-17D586B587-seeklogo.com.png" alt="Your Company" />
-        <h2 class="mt-10 text-center text-3xl font-bold tracking-tight text-gray-900">Registrate</h2>
+        <h2 class="mt-10 text-center text-3xl font-bold tracking-tight" :class="theme.isDark ? 'text-white' : 'text-gray-900'">Registrate</h2>
     </div>
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form class="space-y-6" @submit.prevent="logCredentials()">
             <div>
-                <label for="email" class="block text-sm leading-6 font-medium text-gray-900">Correo Electronico</label>
+                <label for="email" class="block text-sm leading-6 font-medium" :class="theme.isDark ? 'text-white' : 'text-gray-900'">Correo Electronico</label>
                 <div class="mt-2">
                     <input id="email" name="email" type="email" autocomplete="email" v-model="credentials.email" required placeholder="email@company.com"
-                    :class="['block w-full rounded-md border py-2 px-3 text-gray-900 shadow-sm ring-1 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm transition ease-in-out duration-400', errorMessage ? 'border-red-500 ring-red-500' : 'ring-gray-300 focus:ring-[#41B883]']">
+                    :class="['block w-full rounded-md border py-2 px-3 shadow-sm ring-1 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm transition ease-in-out duration-400', theme.isDark ? 'bg-[#1A1A1A] text-white border-gray-700 ring-gray-700 focus:ring-[#42D293]' : 'text-gray-900 ring-gray-300 focus:ring-[#41B883]', errorMessage ? 'border-red-500 ring-red-500' : '']">
                 </div>
             </div>
             <div>
-                <label for="password" class="block text-sm leading-6 font-medium text-gray-900">Contraseña</label>
+                <label for="password" class="block text-sm leading-6 font-medium" :class="theme.isDark ? 'text-white' : 'text-gray-900'">Contraseña</label>
                 <div class="mt-2">
                     <input id="password" name="password" type="password" required autocomplete="current-password" v-model="credentials.password" placeholder="••••••••" 
-                    :class="['block w-full rounded-md border py-2 px-3 text-gray-900 shadow-sm ring-1 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm transition ease-in-out duration-400', errorMessage ? 'border-red-500 ring-red-500' : 'ring-gray-300 focus:ring-[#41B883]']" />
+                    :class="['block w-full rounded-md border py-2 px-3 shadow-sm ring-1 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm transition ease-in-out duration-400', theme.isDark ? 'bg-[#1A1A1A] text-white border-gray-700 ring-gray-700 focus:ring-[#42D293]' : 'text-gray-900 ring-gray-300 focus:ring-[#41B883]', errorMessage ? 'border-red-500 ring-red-500' : '']" />
                 </div>
             </div>
             <div>
-                <label for="confirm-password" class="block text-sm leading-6 font-medium text-gray-900">Repite Contraseña</label>
+                <label for="confirm-password" class="block text-sm leading-6 font-medium" :class="theme.isDark ? 'text-white' : 'text-gray-900'">Repite Contraseña</label>
                 <div class="mt-2">
                     <input id="confirm-password" name="confirm-password" type="password" required autocomplete="current-password" v-model="repeatPwd" placeholder="••••••••" 
-                    :class="['block w-full rounded-md border py-2 px-3 text-gray-900 shadow-sm ring-1 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm transition ease-in-out duration-400', errorMessage ? 'border-red-500 ring-red-500' : 'ring-gray-300 focus:ring-[#41B883]']" />
+                    :class="['block w-full rounded-md border py-2 px-3 shadow-sm ring-1 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm transition ease-in-out duration-400', theme.isDark ? 'bg-[#1A1A1A] text-white border-gray-700 ring-gray-700 focus:ring-[#42D293]' : 'text-gray-900 ring-gray-300 focus:ring-[#41B883]', errorMessage ? 'border-red-500 ring-red-500' : '']" />
                 </div>
             </div>
             <div v-if="errorMessage" class="text-red-500 text-sm">
