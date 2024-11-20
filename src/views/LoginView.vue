@@ -6,13 +6,10 @@
     import loginImage1 from '@/assets/img/login-register-1.png';
     import loginImage2 from '@/assets/img/login-register-2.png';
 
-    const themeStore = useThemeStore();
-    const isDark = computed(() => themeStore.isDark);
-    const toggleTheme = themeStore.toggleTheme;
 
     const useTheme = useThemeStore();
     const theme = reactive(useTheme);
-
+    const toggleTheme = theme.toggleTheme;
     const showLogin = ref(true);
 
     function toggleAuthComponent() {
@@ -21,26 +18,39 @@
 </script>
 
 <template>
-  <div class="flex h-screen">
+  <div :class="theme.isDark ? 'bg-gray-900' : 'bg-white'" class="flex h-screen transition-colors duration-500">
         <!-- Columna izquierda con ilustración -->
-        <div class="hidden lg:flex flex-1 items-center justify-center w-11/12">
+        <div class="hidden lg:flex flex-1 items-center justify-center w-11/12 relative">
             <img
-                :src="isDark ? loginImage2 : loginImage1"
-                alt="Illustration"
-                class="w-full h-full object-cover"
+                :src="loginImage1"
+                alt="Illustration Light"
+                class="w-full h-full object-cover transition-opacity duration-500 absolute"
+                :class="{ 'opacity-0': theme.isDark, 'opacity-100': !theme.isDark }"
+            />
+            <img
+                :src="loginImage2"
+                alt="Illustration Dark"
+                class="w-full h-full object-cover transition-opacity duration-500 absolute"
+                :class="{ 'opacity-100': theme.isDark, 'opacity-0': !theme.isDark }"
             />
         </div>
         <!-- Columna derecha con formulario -->
         <div class="flex flex-col justify-center flex-1 py-12 bg-white w-1/5">
           <component :is="showLogin ? LoginComponent : RegisterComponent"/>
-          <div class="px-48 mt-6">
-            <button type="button" @click="toggleTheme" class="flex w-full justify-center rounded-md bg-gray-500 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition ease-in-out duration-300">
+          <div class="px-48 mt-6 flex flex-col items-center">
+            <button type="button" @click="toggleTheme" class="flex w-full justify-center rounded-md bg-[#41B883] px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-[#42D293] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition ease-in-out duration-300">
               Cambiar Tema
             </button>
-            <a href="#" @click.prevent="toggleAuthComponent" class="mt-4 text-center text-blue-500 hover:underline">
+            <a @click.prevent="toggleAuthComponent" class="mt-4 text-center text-blue-500 hover:underline w-auto cursor-pointer">
               {{ showLogin ? '¿No tienes una cuenta? Regístrate' : '¿Ya tienes una cuenta? Inicia sesión' }}
             </a>
           </div>
         </div>
   </div>
 </template>
+
+<style scoped>
+.transition-opacity {
+  transition: opacity 0.5s ease-in-out;
+}
+</style>
