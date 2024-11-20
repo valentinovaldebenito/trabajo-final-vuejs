@@ -1,23 +1,23 @@
 <script setup lang="ts">
-    import { reactive } from 'vue';
+    import { computed } from 'vue';
     import { useSesionStore } from '@/stores/AuthSesionStore';
     import type { CredentialsModel } from '@/models/CredentialsModel.ts';	
 
 
-    const useSesion = useSesionStore()
-    const sesion = reactive(useSesion)
+    const sesion = useSesionStore()
 
     const credentials: CredentialsModel = {
         email: '',
         password: ''
     }
 
-    const reactiveCredentials = reactive(credentials)
+    const errorMessage = computed(() => sesion.error)
+    
 
     sesion.changeCrsfToken()
-    
+
     async function loginWithCredentials() {
-        const response = await sesion.login(credentials)
+        await sesion.login(credentials);
     }
 </script>
 <template>
@@ -30,16 +30,19 @@
             <div>
                 <label for="email" class="block text-sm leading-6 font-medium text-gray-900">Correo Electronico</label>
                 <div class="mt-2">
-                    <input id="email" name="email" type="email" autocomplete="email" v-model="reactiveCredentials.email" required placeholder="email@company.com"
-                    class="block w-full rounded-md border py-2 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-[#41B883] sm:text-sm transition ease-in-out duration-400">
+                    <input id="email" name="email" type="email" autocomplete="email" v-model="credentials.email" required placeholder="email@company.com"
+                    :class="['block w-full rounded-md border py-2 px-3 text-gray-900 shadow-sm ring-1 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm transition ease-in-out duration-400', errorMessage ? 'border-red-500 ring-red-500' : 'ring-gray-300 focus:ring-[#41B883]']">
                 </div>
             </div>
             <div>
                 <label for="password" class="block text-sm leading-6 font-medium text-gray-900">Contraseña</label>
                 <div class="mt-2">
-                    <input id="password" name="password" type="password" required autocomplete="current-password" v-model="reactiveCredentials.password" placeholder="••••••••" 
-                    class="block w-full rounded-md border py-2 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:outline-none focus:ring-[#41B883] sm:text-sm transition ease-in-out duration-400" />
+                    <input id="password" name="password" type="password" required autocomplete="current-password" v-model="credentials.password" placeholder="••••••••" 
+                    :class="['block w-full rounded-md border py-2 px-3 text-gray-900 shadow-sm ring-1 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:outline-none sm:text-sm transition ease-in-out duration-400', errorMessage ? 'border-red-500 ring-red-500' : 'ring-gray-300 focus:ring-[#41B883]']" />
                 </div>
+            </div>
+            <div v-if="errorMessage" class="text-red-500 text-sm">
+                {{ errorMessage }}
             </div>
             <div>
                 <button type="submit" class="flex w-full justify-center rounded-md bg-[#41B883] px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-[#42D293] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition ease-in-out duration-300">
